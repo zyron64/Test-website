@@ -1,56 +1,547 @@
-:root{
-  --bg:#0f1724;
-  --card:#0b1220;
-  --muted:#aab4c6;
-  --accent:#5eead4;
-  --danger:#ff6b6b;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:Inter, "Segoe UI", Tahoma, Arial, sans-serif;
-  background:linear-gradient(180deg,#071024 0%, #081428 100%);
-  color:#e6eef8;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.5;
-}
-.container{max-width:920px;margin:0 auto;padding:20px}
-.site-header{
-  padding:28px 0;
-  border-bottom:1px solid rgba(255,255,255,0.03);
-}
-.site-header h1{margin:0;font-size:28px}
-.subtitle{margin:6px 0 0;color:var(--muted)}
-.main{padding:28px 0;display:grid;gap:18px;grid-template-columns:1fr}
-.card{
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);
-  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-}
-.card h2{margin:0 0 8px}
-.status{
-  padding:12px;border-radius:8px;margin:12px 0;display:flex;flex-direction:column;
-  gap:6px;border:1px solid rgba(255,255,255,0.03);
-}
-.status.offline{background:rgba(255,20,20,0.04);border-color:rgba(255,20,20,0.07)}
-.status.checking{background:rgba(255,255,0,0.03);border-color:rgba(255,255,0,0.07)}
-.status.online{background:rgba(30,255,180,0.03);border-color:rgba(30,255,180,0.08)}
-.status strong{font-size:15px}
-.status span{color:var(--muted);font-size:13px}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zynox - استضافة بوتات ديسكورد المجانية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.controls{display:flex;gap:8px;align-items:center;margin-top:8px}
-.controls input{
-  flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
-  background:#071228;color:#e6eef8;
-}
-.controls button{
-  padding:10px 14px;border-radius:8px;border:none;background:var(--accent);color:#022;
-  cursor:pointer;font-weight:600;
-}
-.note{color:var(--muted);font-size:13px;margin-top:10px}
-.site-footer{padding:18px 0;text-align:center;color:var(--muted);font-size:13px}
-@media(min-width:900px){
-  .main{grid-template-columns:1fr 380px}
-}
+        :root {
+            --primary: #5865F2;
+            --secondary: #57F287;
+            --dark: #1a1a1a;
+            --darker: #0f0f0f;
+            --light: #ffffff;
+            --gray: #2d2d2d;
+            --gradient: linear-gradient(135deg, #5865F2, #57F287);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px var(--primary); }
+            50% { text-shadow: 0 0 20px var(--primary), 0 0 30px var(--secondary); }
+        }
+
+        /* Header */
+        .glass-header {
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 1s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--darker) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(88, 101, 242, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(87, 242, 135, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.5s ease 0.3s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.4);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: var(--gradient);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            background: var(--dark);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        /* Free Plan Section */
+        .free-plan {
+            padding: 5rem 2rem;
+            background: var(--darker);
+            text-align: center;
+        }
+
+        .plan-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 2px solid var(--secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease;
+        }
+
+        .free-badge {
+            position: absolute;
+            top: 20px;
+            left: -30px;
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 10px 40px;
+            transform: rotate(-45deg);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: right;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .plan-features li {
+            margin: 1rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 5rem 2rem;
+            background: var(--dark);
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card {
+                margin: 1rem;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-robot"></i> Zynox
+            </div>
+            <nav class="nav-links">
+                <a href="#features">المميزات</a>
+                <a href="#free">الخطة المجانية</a>
+                <a href="#how">كيفية الاستخدام</a>
+                <a href="#contact">اتصل بنا</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>استضافة بوتات ديسكورد</h1>
+            <p>المنصة الأكثر تطوراً لاستضافة بوتاتك</p>
+            <button class="cta-button" onclick="window.location.href='login.html'">
+                ابدأ الآن <i class="fas fa-rocket"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 class="section-title">مميزات منصتنا</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>أداء فائق</h3>
+                <p>خوادم سريعة بمواصفات عالية لأفضل أداء لبوتاتك</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>حماية متقدمة</h3>
+                <p>نظام حماية متكامل ضد الهجمات والتوقف غير المتوقع</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>مجاني بالكامل</h3>
+                <p>لا توجد خطط مدفوعة - كل المميزات متاحة للجميع</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-code"></i>
+                <h3>دعم متعدد</h3>
+                <p>دعم كامل لبوتات Node.js و Python ومختلف المكتبات</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-plug"></i>
+                <h3>تشغيل 24/7</h3>
+                <p>بوتاتك تعمل باستمرار بدون انقطاع</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>نشر سهل</h3>
+                <p>رفع ونشر البوتات في دقائق معدودة</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Free Plan Section -->
+    <section id="free" class="free-plan">
+        <h2 class="section-title">الخطة المجانية</h2>
+        <div class="plan-card">
+            <div class="free-badge">مجاني</div>
+            <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);">كل المميزات متاحة</h3>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">لا توجد قيود - استمتع بكل شيء مجاناً</p>
+            
+            <ul class="plan-features">
+                <li>✅ بوتات غير محدودة</li>
+                <li>✅ ذاكرة غير محدودة</li>
+                <li>✅ دعم Node.js كامل</li>
+                <li>✅ دعم Python كامل</li>
+                <li>✅ تشغيل 24/7</li>
+                <li>✅ نسخ احتياطي تلقائي</li>
+                <li>✅ تحديثات مستمرة</li>
+                <li>✅ دعم فني مجاني</li>
+                <li>✅ نطاق غير محدود</li>
+                <li>✅ حماية من الهجمات</li>
+            </ul>
+            
+            <button class="cta-button" onclick="window.location.href='login.html'" style="background: var(--secondary);">
+                ابدأ الاستضافة المجانية <i class="fas fa-play"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how" class="how-it-works">
+        <h2 class="section-title">كيف تبدأ في 3 خطوات</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>أنشئ حسابك</h3>
+                <p>سجل في المنصة مجاناً في أقل من دقيقة</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>أضف بوتك</h3>
+                <p>ارفع ملفات بوتك أو استخدم Git</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>شغّل بوتك</h3>
+                <p>اضغط تشغيل وبوتك جاهز للعمل!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">
+                <i class="fas fa-robot"></i> Zynox
+            </div>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">منصة استضافة بوتات ديسكورد المجانية بالكامل</p>
+            
+            <div style="margin: 2rem 0;">
+                <h4 style="color: var(--secondary); margin-bottom: 1rem;">تواصل معنا</h4>
+                <p>الدعم متاح 24/7 عبر الديسكورد</p>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="#" style="color: var(--light); margin: 0 10px; font-size: 1.5rem;">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="#" style="color: var(--light); margin: 0 10px; font-size: 1.5rem;">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            
+            <p style="margin-top: 2rem; opacity: 0.7;">&copy; 2025 Zynox. جميع الحقوق محفوظة - الخدمة مجانية دائماً</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+  </html>
